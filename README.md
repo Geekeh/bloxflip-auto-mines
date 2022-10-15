@@ -7,4 +7,4 @@
 ## install and run
 #### pip install discord bloxflip.py websocket-client
 
-### DO NOT repost without credits and or use code in project without credits
+#### DO NOT repost without credits and or use source code in project without credits
