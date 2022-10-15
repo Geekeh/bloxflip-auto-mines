@@ -49,7 +49,6 @@ async def self(interaction: discord.Interaction, mine_amount : int, auth_token :
                 a = random.randint(0, 24)
                 bloxflip.Mines.Choose(choice=int(a), auth=auth_token)
                 await interaction.followup.send('clicked mine')
-                sleep(0.2)
             except:
                 await interaction.followup.send("failed to click mines")
                 return
@@ -72,4 +71,4 @@ async def self(interaction: discord.Interaction, auth_token : str):
         await interaction.followup.send("not in a game")
     
 
-client.run('')
+client.run('bot token here')
