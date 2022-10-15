@@ -5,7 +5,7 @@
 #### code is pretty bad but will be updated soon
 
 ## install and run
-#### pip install discord bloxflip.py websocket-client
+#### type - pip install discord bloxflip.py websocket-client
 #### put your bot token at the bottom of the code
 
 #### DO NOT repost without credits and or use source code in project without credits
