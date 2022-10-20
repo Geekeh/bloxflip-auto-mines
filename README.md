@@ -8,4 +8,6 @@
 #### type - pip install discord bloxflip.py websocket-client
 #### put your bot token at the bottom of the code
 
+discord.gg/juicy
+
 #### DO NOT repost without credits and or use source code in project without credits
