@@ -20,7 +20,7 @@ client = aclient()
 tree = app_commands.CommandTree(client)
 
 
-@tree.command(name = 'mines', description='auto player mines') 
+@tree.command(name = 'auto_mines', description='auto player mines') 
 async def self(interaction: discord.Interaction, bet_amount : int, mine_amount : int, auth_token : str):
     if bet_amount < 5:
         await interaction.response.send_message("bet amount must be higher than 5!")
@@ -30,45 +30,40 @@ async def self(interaction: discord.Interaction, bet_amount : int, mine_amount :
         if start_game.status_code == 400:
             await interaction.response.send_message("Failed to start game | Bet amount prob higher than balance")
             return 0
-        await interaction.response.send_message("Game started! use /choose_mine to click a mine")
-    except:
-        await interaction.response.send_message("Error of the following: Bet amount, Mine amount, Auth token, api did not respond")
-
-@tree.command(name = 'choose_mine', description='choose how many mines u want to click') 
-async def self(interaction: discord.Interaction, mine_amount : int, auth_token : str):
-    try:
         bloxflip.Currency.Balance(auth=auth_token)
     except:
         await interaction.response.send_message("invalid auth token")
         return 0
     times = range(mine_amount)
-    await interaction.response.send_message('Clicking mines...')
+    await interaction.response.send_message('Attempting to click mines')
     try:
         for x in times:
             try:
                 a = random.randint(0, 24)
                 bloxflip.Mines.Choose(choice=int(a), auth=auth_token)
-                await interaction.followup.send('clicked mine')
             except:
-                await interaction.followup.send("failed to click mines")
+                balance = Currency.Balance(auth=auth_token)
+                emved = discord.Embed(color=0xff0000)
+                emved.add_field(name='AUTOMATED MINES', value=f'You Lost! | Balance: **{balance}**')
+                emved.set_footer(text='MADE BY Geek#2526, MODIFIED BY static#4444')
+                await interaction.followup.send(embed=emved)
                 return
         
     except:
         await interaction.followup.send("failed to click mines")
-
-@tree.command(name='cashout', description='cashout of a mines game')
-async def self(interaction: discord.Interaction, auth_token : str):
-    try:
-        bloxflip.Currency.Balance(auth=auth_token)
-    except:
-        await interaction.response.send_message("invalid auth token")
         return 0
-    await interaction.response.send_message("cashing out of mines game")
     try:
         bloxflip.Mines.Cashout(auth=auth_token)
-        await interaction.followup.send("Cashed out of game!")
+        balance = Currency.Balance(auth=auth_token)
+        em = discord.Embed(color=0x00ff00)
+        em.add_field(name='AUTOMATED MINES', value=f'You Won! | Balance: **{balance}**')
+        em.set_footer(text='MADE BY Geek#2526, MODIFIED BY static#4444')
+        await interaction.followup.send(embed=em)
     except:
-        await interaction.followup.send("not in a game")
-    
+        balance = Currency.Balance(auth=auth_token)
+        embed = discord.Embed(color=0xff0000)
+        embed.add_field(name='AUTOMATED MINES', value=f'You Lost! | Balance: **{balance}**')
+        em.set_footer(text='MADE BY Geek#2526, MODIFIED BYstatic#4444')
+        await interaction.followup.send(embed=embed)
 
 client.run('bot token here')
