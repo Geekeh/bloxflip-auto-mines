@@ -30,19 +30,22 @@ async def self(interaction: discord.Interaction, bet_amount : int, mine_amount :
         if start_game.status_code == 400:
             await interaction.response.send_message("Failed to start game | Bet amount prob higher than balance")
             return 0
-        bloxflip.Currency.Balance(auth=auth_token)
+        bloxflip.Currency.balance(auth=auth_token)
     except:
         await interaction.response.send_message("invalid auth token")
         return 0
     times = range(mine_amount)
+
+    mines = bloxflip.Mines(auth)
+
     await interaction.response.send_message('Attempting to click mines')
     try:
         for x in times:
             try:
                 a = random.randint(0, 24)
-                bloxflip.Mines.Choose(choice=int(a), auth=auth_token)
+                mines.choose(a)
             except:
-                balance = Currency.Balance(auth=auth_token)
+                balance = Currency.balance(auth=auth_token)
                 emved = discord.Embed(color=0xff0000)
                 emved.add_field(name='AUTOMATED MINES', value=f'You Lost! | Balance: **{balance}**')
                 emved.set_footer(text='MADE BY Geek#2526, MODIFIED BY static#4444')
@@ -52,15 +55,16 @@ async def self(interaction: discord.Interaction, bet_amount : int, mine_amount :
     except:
         await interaction.followup.send("failed to click mines")
         return 0
+
     try:
-        bloxflip.Mines.Cashout(auth=auth_token)
-        balance = Currency.Balance(auth=auth_token)
+        mines.cashout()
+        balance = Currency.balance(auth=auth_token)
         em = discord.Embed(color=0x00ff00)
         em.add_field(name='AUTOMATED MINES', value=f'You Won! | Balance: **{balance}**')
         em.set_footer(text='MADE BY Geek#2526, MODIFIED BY static#4444')
         await interaction.followup.send(embed=em)
     except:
-        balance = Currency.Balance(auth=auth_token)
+        balance = Currency.balance(auth=auth_token)
         embed = discord.Embed(color=0xff0000)
         embed.add_field(name='AUTOMATED MINES', value=f'You Lost! | Balance: **{balance}**')
         em.set_footer(text='MADE BY Geek#2526, MODIFIED BYstatic#4444')
